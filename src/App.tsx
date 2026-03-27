@@ -1,39 +1,49 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Box, CssBaseline, ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
-import AsideMenu from './components/AsideMenu';
-import { usePortfolioContent } from './hooks/usePortfolioContent';
+import { useEffect, useMemo, useState } from "react";
+import {
+  Box,
+  CssBaseline,
+  ThemeProvider,
+  createTheme,
+  useMediaQuery,
+  PaletteMode,
+} from "@mui/material";
+import AsideMenu from "./components/AsideMenu";
+import { usePortfolioContent } from "./hooks/usePortfolioContent";
 
-import PagesRouter from './routes/routes';
+import PagesRouter from "./routes/routes";
 
 function App() {
   const { loading } = usePortfolioContent();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [themeMode, setThemeMode] = useState(() => localStorage.getItem('portfolio_theme_mode') || 'system');
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const [themeMode, setThemeMode] = useState(
+    () => localStorage.getItem("portfolio_theme_mode") || "system",
+  );
 
-  const resolvedMode = themeMode === 'system' ? (prefersDarkMode ? 'dark' : 'light') : themeMode;
+  const resolvedMode =
+    themeMode === "system" ? (prefersDarkMode ? "dark" : "light") : themeMode;
 
   useEffect(() => {
-    localStorage.setItem('portfolio_theme_mode', themeMode);
+    localStorage.setItem("portfolio_theme_mode", themeMode);
   }, [themeMode]);
 
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          mode: resolvedMode,
+          mode: resolvedMode as PaletteMode,
           primary: {
-            main: resolvedMode === 'dark' ? '#90caf9' : '#1565c0',
+            main: resolvedMode === "dark" ? "#90caf9" : "#1565c0",
           },
           background: {
-            default: resolvedMode === 'dark' ? '#0f172a' : '#f7f9fc',
-            paper: resolvedMode === 'dark' ? '#111827' : '#ffffff',
+            default: resolvedMode === "dark" ? "#0f172a" : "#f7f9fc",
+            paper: resolvedMode === "dark" ? "#111827" : "#ffffff",
           },
         },
         shape: {
           borderRadius: 18,
         },
         typography: {
-          fontFamily: ['Inter', 'Roboto', 'Arial', 'sans-serif'].join(','),
+          fontFamily: ["Inter", "Roboto", "Arial", "sans-serif"].join(","),
           h3: {
             fontWeight: 700,
           },
@@ -51,19 +61,29 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: 'background.default' }}>
-        <AsideMenu
-          themeMode={themeMode}
-          onChangeTheme={setThemeMode}
-        />
+      <Box
+        sx={{
+          display: "flex",
+          minHeight: "100vh",
+          bgcolor: "background.default",
+        }}
+      >
+        <AsideMenu themeMode={themeMode} onChangeTheme={setThemeMode} />
 
         <Box component="main" sx={{ flex: 1, p: { xs: 2, md: 4 } }}>
           {loading ? (
-             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-               Carregando conteúdo...
-             </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              Carregando conteúdo...
+            </Box>
           ) : (
-          <PagesRouter />
+            <PagesRouter />
           )}
         </Box>
       </Box>
