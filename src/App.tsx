@@ -1,15 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
 import { Box, CssBaseline, ThemeProvider, createTheme, useMediaQuery } from '@mui/material';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ProjectsPage from './pages/ProjectsPage';
-import AdminPage from './pages/AdminPage';
 import AsideMenu from './components/AsideMenu';
 import { usePortfolioContent } from './hooks/usePortfolioContent';
 
+import PagesRouter from './routes/routes';
+
 function App() {
-  const { content, setContent, resetContent, loading } = usePortfolioContent();
+  const { loading } = usePortfolioContent();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [themeMode, setThemeMode] = useState(() => localStorage.getItem('portfolio_theme_mode') || 'system');
 
@@ -66,22 +63,7 @@ function App() {
                Carregando conteúdo...
              </Box>
           ) : (
-          <Routes>
-            <Route path="/" element={<HomePage content={content} />} />
-            <Route path="/about" element={<AboutPage content={content} />} />
-            <Route path="/projects" element={<ProjectsPage content={content} />} />
-            <Route
-              path="/admin"
-              element={
-                <AdminPage
-                  content={content}
-                  setContent={setContent}
-                  resetContent={resetContent}
-                />
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <PagesRouter />
           )}
         </Box>
       </Box>
