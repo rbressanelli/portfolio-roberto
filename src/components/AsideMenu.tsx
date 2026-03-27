@@ -38,7 +38,7 @@ function AsideMenu({ themeMode, onChangeTheme }: any) {
   useEffect(() => {
     async function getLocation() {
       try {
-        const response = await fetch('http://ip-api.com/json/');
+        const response = await fetch('https://ipinfo.io/json');
         const data = await response.json();
         const city = data.city || 'Cidade não identificada';
         const region = data.region || '';
