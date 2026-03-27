@@ -1,8 +1,8 @@
-import { Box } from '@mui/material';
-import SectionHero from '../components/SectionHero';
-import TechnologyList from '../components/TechnologyList';
+import { Box } from "@mui/material";
+import SectionHero from "../components/SectionHero";
+import TechnologyList from "../components/TechnologyList";
 
-function HomePage({ content }) {
+function HomePage({ content }: { content: any }) {
   return (
     <Box>
       <SectionHero

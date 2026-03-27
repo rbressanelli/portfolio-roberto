@@ -1,8 +1,23 @@
-import { Link, List, ListItem, ListItemText, Paper, Stack, Typography } from '@mui/material';
+import {
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 
-function TechnologyList({ technologies }) {
+interface Technology {
+  id: string | number;
+  icon: string;
+  name: string;
+  url: string;
+}
+
+function TechnologyList({ technologies }: { technologies: Technology[] }) {
   return (
-    <Paper elevation={0} sx={{ p: { xs: 2, md: 3 }, mt: 3 }}>
+    <Paper elevation={2} sx={{ p: { xs: 2, md: 3 }, mt: 3 }}>
       <Typography variant="h5" sx={{ mb: 2 }}>
         Tecnologias
       </Typography>
@@ -20,7 +35,12 @@ function TechnologyList({ technologies }) {
               py: 1.5,
             }}
           >
-            <Stack direction="row" spacing={1.5} alignItems="center" sx={{ width: '100%' }}>
+            <Stack
+              direction="row"
+              spacing={1.5}
+              alignItems="center"
+              sx={{ width: "100%" }}
+            >
               <Typography variant="h6">{technology.icon}</Typography>
               <ListItemText primary={technology.name} />
               <Link href={technology.url} target="_blank" rel="noreferrer">

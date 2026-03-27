@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import SectionHero from '../components/SectionHero';
 import ProjectCard from '../components/ProjectCard';
 
-function ProjectsPage({ content }) {
+function ProjectsPage({ content }: { content: any }) {
   return (
     <Box>
       <SectionHero
@@ -17,7 +17,7 @@ function ProjectsPage({ content }) {
       </Typography>
 
       <Grid container spacing={2}>
-        {content.projects.map((project) => (
+        {content.projects.map((project: any) => (
           <Grid key={project.id} size={{ xs: 12, md: 6, xl: 4 }}>
             <ProjectCard project={project} />
           </Grid>

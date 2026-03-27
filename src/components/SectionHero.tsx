@@ -1,40 +1,54 @@
-import { Grid, Paper, Typography, Box } from '@mui/material';
+import { Grid, Paper, Typography, Box } from "@mui/material";
 
-function SectionHero({ title, text, image, imageAlt }) {
+function SectionHero({
+  title,
+  text,
+  image,
+  imageAlt,
+}: {
+  title: string;
+  text: string;
+  image: string;
+  imageAlt: string;
+}) {
   return (
     <Grid container spacing={3} alignItems="stretch">
       <Grid size={{ xs: 12, lg: 7 }}>
         <Paper
-          elevation={0}
+          elevation={2}
           sx={{
             p: { xs: 3, md: 5 },
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
           <Typography variant="h3" sx={{ mb: 2 }}>
             {title}
           </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.8 }}>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ lineHeight: 1.8 }}
+          >
             {text}
           </Typography>
         </Paper>
       </Grid>
 
       <Grid size={{ xs: 12, lg: 5 }}>
-        <Paper elevation={0} sx={{ p: 1.5, height: '100%' }}>
+        <Paper elevation={2} sx={{ p: 1.5, height: "100%" }}>
           <Box
             component="img"
             src={image}
             alt={imageAlt}
             sx={{
-              width: '100%',
+              width: "100%",
               height: { xs: 260, md: 360 },
-              objectFit: 'cover',
+              objectFit: "scale-down",
               borderRadius: 4,
-              display: 'block',
+              display: "block",
             }}
           />
         </Paper>

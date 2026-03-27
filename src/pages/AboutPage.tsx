@@ -1,7 +1,17 @@
-import { Box } from '@mui/material';
-import SectionHero from '../components/SectionHero';
+import { Box } from "@mui/material";
+import SectionHero from "../components/SectionHero";
 
-function AboutPage({ content }) {
+interface AboutPageProps {
+  content: {
+    about: {
+      title: string;
+      text: string;
+      photo: string;
+    };
+  };
+}
+
+function AboutPage({ content }: AboutPageProps) {
   return (
     <Box>
       <SectionHero
