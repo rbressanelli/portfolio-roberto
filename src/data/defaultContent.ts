@@ -8,21 +8,18 @@ export const defaultContent = {
     greetingText:
       "Fico feliz pela sua visita. Aqui você encontra um pouco da minha trajetória, das tecnologias com as quais trabalhei e de alguns projetos que representam minha experiência com desenvolvimento web.",
     heroImage:
-      `${homeImage}` ||
-      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80",
+      homeImage,
   },
   about: {
     title: "Sobre mim",
     text: "Sou desenvolvedor web full stack, com formação em Engenharia Eletrônica e atuação em projetos de front-end e back-end. Ao longo da minha trajetória, trabalhei com aplicações web, APIs, interfaces e integrações, buscando manter um código claro, organizado e alinhado com boas práticas de desenvolvimento.",
     photo:
-      `${aboutImage}` ||
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+      aboutImage,
   },
   projectsPage: {
     title: "Projetos",
     text: "Nesta seção estão alguns projetos que ajudam a mostrar a variedade de tecnologias com as quais já trabalhei, além de diferentes contextos de negócio e tipos de solução.",
-    image: `${projectImage}` ||
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+    image: projectImage ,
   },
   technologies: [
     {
