@@ -6,6 +6,7 @@ import {
   Typography,
   Stack,
   Chip,
+  Box,
 } from "@mui/material";
 import LaunchRoundedIcon from "@mui/icons-material/LaunchRounded";
 
@@ -29,27 +30,30 @@ function ProjectCard({ project }: { project: Project }) {
         "&:hover": {
           backgroundColor: (theme) =>
             theme.palette.mode === "dark"
-              ? '#232b3a' 
+              ? '#232b3a'
               : "#f4f4f4",
           transform: "scale(1.02)",
         },
       }}
     >
       <CardContent sx={{ flex: 1 }}>
-        <Stack spacing={2}>
+        <Stack height={'100%'} spacing={2}>
           <Typography variant="h6">{project.title}</Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ lineHeight: 1.7 }}
-          >
-            {project.description}
-          </Typography>
-          <Chip
-            label={project.stack}
-            variant="outlined"
-            sx={{ width: "fit-content" }}
-          />
+          <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 1, height: "100%" }}>
+
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ lineHeight: 1.7 }}
+            >
+              {project.description}
+            </Typography>
+            <Chip
+              label={project.stack}
+              variant="outlined"
+              sx={{ width: "fit-content", mt: 2 }}
+            />
+          </Box>
         </Stack>
       </CardContent>
 
