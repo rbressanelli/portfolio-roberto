@@ -18,6 +18,8 @@ import { supabase } from "../lib/supabaseClient";
 const emptyProject = { title: "", description: "", stack: "", link: "" };
 const emptyTechnology = { name: "", icon: "", url: "" };
 
+const userEmail = import.meta.env.VITE_ADMIN_EMAIL;
+
 function AdminPage({ content, setContent, resetContent }: any) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
@@ -36,7 +38,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      if (session?.user?.email === "rbressanelli@gmail.com") {
+      if (session?.user?.email === userEmail) {
         setIsAuthenticated(true);
       }
     };
@@ -44,7 +46,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        if (session?.user?.email === "rbressanelli@gmail.com") {
+        if (session?.user?.email === userEmail) {
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);
@@ -64,7 +66,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
       return;
     }
 
-    if (email !== "rbressanelli@gmail.com") {
+    if (email !== userEmail) {
       setError("Usuário não autorizado.");
       return;
     }
