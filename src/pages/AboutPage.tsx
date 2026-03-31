@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import SectionHero from "../components/SectionHero";
+import ContactsCard from "../components/ContactsCard";
 
 interface AboutPageProps {
   content: {
@@ -20,8 +21,10 @@ function AboutPage({ content }: AboutPageProps) {
         image={content.about.photo}
         imageAlt="Foto de perfil"
       />
+      <ContactsCard />
     </Box>
   );
 }
 
 export default AboutPage;
+
