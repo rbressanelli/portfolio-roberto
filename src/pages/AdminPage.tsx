@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   Paper,
@@ -22,6 +23,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loadingMsg, setLoadingMsg] = useState("");
+  const [uploading, setUploading] = useState<string | null>(null);
 
   const [draft, setDraft] = useState(() => JSON.parse(JSON.stringify(content)));
 
@@ -86,6 +88,36 @@ function AdminPage({ content, setContent, resetContent }: any) {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+  };
+
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>, section: string, field: string) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(field);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${section}_${Date.now()}.${fileExt}`;
+      const filePath = `uploads/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio')
+        .getPublicUrl(filePath);
+
+      handleSectionChange(section, field, publicUrl);
+    } catch (err: any) {
+      alert(`Erro ao fazer upload: ${err.message}`);
+    } finally {
+      setUploading(null);
+    }
   };
 
   const handleSectionChange = (
@@ -241,14 +273,36 @@ function AdminPage({ content, setContent, resetContent }: any) {
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              label="URL da imagem da Home"
-              value={draft.home.heroImage}
-              onChange={(event) =>
-                handleSectionChange("home", "heroImage", event.target.value)
-              }
-              fullWidth
-            />
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: 1,
+                  overflow: "hidden",
+                  bgcolor: "grey.100",
+                }}
+              >
+                <img
+                  src={draft.home.heroImage}
+                  alt="Previa"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </Box>
+              <Button
+                variant="outlined"
+                component="label"
+                disabled={uploading === "heroImage"}
+              >
+                {uploading === "heroImage" ? <CircularProgress size={24} /> : "Mudar imagem Home"}
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => handleUpload(e, "home", "heroImage")}
+                />
+              </Button>
+            </Stack>
           </Grid>
           <Grid size={{ xs: 12 }}>
             <TextField
@@ -281,14 +335,36 @@ function AdminPage({ content, setContent, resetContent }: any) {
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              label="URL da foto"
-              value={draft.about.photo}
-              onChange={(event) =>
-                handleSectionChange("about", "photo", event.target.value)
-              }
-              fullWidth
-            />
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: 1,
+                  overflow: "hidden",
+                  bgcolor: "grey.100",
+                }}
+              >
+                <img
+                  src={draft.about.photo}
+                  alt="Previa"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </Box>
+              <Button
+                variant="outlined"
+                component="label"
+                disabled={uploading === "photo"}
+              >
+                 {uploading === "photo" ? <CircularProgress size={24} /> : "Mudar foto About"}
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => handleUpload(e, "about", "photo")}
+                />
+              </Button>
+            </Stack>
           </Grid>
           <Grid size={{ xs: 12 }}>
             <TextField
@@ -321,14 +397,36 @@ function AdminPage({ content, setContent, resetContent }: any) {
             />
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
-            <TextField
-              label="URL da imagem"
-              value={draft.projectsPage.image}
-              onChange={(event) =>
-                handleSectionChange("projectsPage", "image", event.target.value)
-              }
-              fullWidth
-            />
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  borderRadius: 1,
+                  overflow: "hidden",
+                  bgcolor: "grey.100",
+                }}
+              >
+                <img
+                  src={draft.projectsPage.image}
+                  alt="Previa"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </Box>
+              <Button
+                variant="outlined"
+                component="label"
+                disabled={uploading === "image"}
+              >
+                {uploading === "image" ? <CircularProgress size={24} /> : "Mudar imagem Projetos"}
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => handleUpload(e, "projectsPage", "image")}
+                />
+              </Button>
+            </Stack>
           </Grid>
           <Grid size={{ xs: 12 }}>
             <TextField
@@ -497,3 +595,4 @@ function AdminPage({ content, setContent, resetContent }: any) {
 }
 
 export default AdminPage;
+
