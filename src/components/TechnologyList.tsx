@@ -1,4 +1,5 @@
 import {
+  Box,
   Link,
   List,
   ListItem,
@@ -41,7 +42,32 @@ function TechnologyList({ technologies }: { technologies: Technology[] }) {
               alignItems="center"
               sx={{ width: "100%" }}
             >
-              <Typography variant="h6">{technology.icon}</Typography>
+              <Box
+                sx={{
+                  width: 32,
+                  height: 32,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+              >
+                {technology.icon &&
+                (technology.icon.startsWith("http") ||
+                  technology.icon.startsWith("/")) ? (
+                  <img
+                    src={technology.icon}
+                    alt={technology.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+                ) : (
+                  <Typography variant="h6">{technology.icon}</Typography>
+                )}
+              </Box>
               <ListItemText primary={technology.name} />
               <Link href={technology.url} target="_blank" rel="noreferrer">
                 Visitar
@@ -55,3 +81,4 @@ function TechnologyList({ technologies }: { technologies: Technology[] }) {
 }
 
 export default TechnologyList;
+

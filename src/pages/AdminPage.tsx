@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -145,6 +145,37 @@ function AdminPage({ content, setContent, resetContent }: any) {
         currentIndex === index ? { ...item, [field]: value } : item,
       ),
     }));
+  };
+
+  const handleTechnologyUpload = async (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const techName = draft.technologies[index].name || "tech";
+    const uploadId = `tech-${index}`;
+    setUploading(uploadId);
+    
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `tech_${techName.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}.${fileExt}`;
+      const filePath = `technologies/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio')
+        .getPublicUrl(filePath);
+
+      handleTechnologyChange(index, "icon", publicUrl);
+    } catch (err: any) {
+      alert(`Erro ao fazer upload do ícone: ${err.message}`);
+    } finally {
+      setUploading(null);
+    }
   };
 
   const handleProjectChange = (index: number, field: string, value: string) => {
@@ -459,7 +490,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
         <Stack spacing={2}>
           {draft.technologies.map((technology: any, index: number) => (
             <Paper key={technology.id} variant="outlined" sx={{ p: 2 }}>
-              <Grid container spacing={2}>
+              <Grid container spacing={2} alignItems="center">
                 <Grid size={{ xs: 12, md: 3 }}>
                   <TextField
                     label="Nome"
@@ -470,17 +501,49 @@ function AdminPage({ content, setContent, resetContent }: any) {
                     fullWidth
                   />
                 </Grid>
-                <Grid size={{ xs: 12, md: 2 }}>
-                  <TextField
-                    label="Ícone"
-                    value={technology.icon}
-                    onChange={(event) =>
-                      handleTechnologyChange(index, "icon", event.target.value)
-                    }
-                    fullWidth
-                  />
+                <Grid size={{ xs: 12, md: 3 }}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Box
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 1,
+                        overflow: "hidden",
+                        bgcolor: "grey.100",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0
+                      }}
+                    >
+                      {technology.icon && (technology.icon.startsWith("http") || technology.icon.startsWith("/")) ? (
+                        <img
+                          src={technology.icon}
+                          alt=""
+                          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                        />
+                      ) : (
+                        <Typography variant="h6">{technology.icon}</Typography>
+                      )}
+                    </Box>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      component="label"
+                      disabled={uploading === `tech-${index}`}
+                      sx={{ minWidth: 120 }}
+                    >
+                      {uploading === `tech-${index}` ? <CircularProgress size={20} /> : "Mudar Ícone"}
+                      <input
+                        type="file"
+                        hidden
+                        accept="image/*"
+                        onChange={(e) => handleTechnologyUpload(e, index)}
+                      />
+                    </Button>
+                  </Stack>
                 </Grid>
-                <Grid size={{ xs: 12, md: 5 }}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Link"
                     value={technology.url}
