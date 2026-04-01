@@ -31,9 +31,8 @@ function SectionHero({
             variant="body1"
             color="text.secondary"
             sx={{ lineHeight: 1.8 }}
-          >
-            {text}
-          </Typography>
+            dangerouslySetInnerHTML={{ __html: text }}
+          />
         </Paper>
       </Grid>
 
