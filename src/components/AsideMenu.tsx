@@ -10,6 +10,8 @@ import {
   Select,
   Stack,
   Typography,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
@@ -18,6 +20,9 @@ import WorkRoundedIcon from '@mui/icons-material/WorkRounded';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import PaletteRoundedIcon from '@mui/icons-material/PaletteRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
 
 const menuItems = [
   { to: '/', label: 'Home', icon: <HomeRoundedIcon fontSize="small" /> },
@@ -26,6 +31,8 @@ const menuItems = [
 ];
 
 function AsideMenu({ themeMode, onChangeTheme }: any) {
+  const theme = useTheme();
+  const isCompact = useMediaQuery(theme.breakpoints.down('md'));
   const location = useLocation();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [place, setPlace] = useState('Obtendo local...');
@@ -131,16 +138,48 @@ function AsideMenu({ themeMode, onChangeTheme }: any) {
               <Typography sx={{ display: { xs: 'none', md: 'block' } }}>Tema</Typography>
             </Stack>
             <FormControl fullWidth size="small">
-              <InputLabel id="theme-mode-label">Tema</InputLabel>
+              <InputLabel id="theme-mode-label" sx={{ display: isCompact ? 'none' : 'block' }}>
+                Tema
+              </InputLabel>
               <Select
                 labelId="theme-mode-label"
                 value={themeMode}
-                label="Tema"
+                label={isCompact ? undefined : 'Tema'}
                 onChange={(event) => onChangeTheme(event.target.value)}
+                renderValue={(selected) => {
+                  if (!isCompact) {
+                    return selected === 'light' ? 'Light' : selected === 'dark' ? 'Dark' : 'Sistema';
+                  }
+                  switch (selected) {
+                    case 'light':
+                      return <LightModeRoundedIcon fontSize="small" />;
+                    case 'dark':
+                      return <DarkModeRoundedIcon fontSize="small" />;
+                    default:
+                      return <SettingsBrightnessRoundedIcon fontSize="small" />;
+                  }
+                }}
+                sx={{
+                  '& .MuiSelect-select': {
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: isCompact ? 'center' : 'flex-start',
+                    gap: 1,
+                  },
+                }}
               >
-                <MenuItem value="light">Light</MenuItem>
-                <MenuItem value="dark">Dark</MenuItem>
-                <MenuItem value="system">Sistema</MenuItem>
+                <MenuItem value="light" sx={{ gap: 1 }}>
+                  <LightModeRoundedIcon fontSize="small" />
+                  Light
+                </MenuItem>
+                <MenuItem value="dark" sx={{ gap: 1 }}>
+                  <DarkModeRoundedIcon fontSize="small" />
+                  Dark
+                </MenuItem>
+                <MenuItem value="system" sx={{ gap: 1 }}>
+                  <SettingsBrightnessRoundedIcon fontSize="small" />
+                  Sistema
+                </MenuItem>
               </Select>
             </FormControl>
           </Box>
