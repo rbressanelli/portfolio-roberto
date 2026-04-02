@@ -9,6 +9,9 @@ import {
   Box,
 } from "@mui/material";
 import LaunchRoundedIcon from "@mui/icons-material/LaunchRounded";
+import { useState, useRef, useEffect } from "react";
+
+const LINE_LIMIT = 3;
 
 interface Project {
   title: string;
@@ -18,6 +21,34 @@ interface Project {
 }
 
 function ProjectCard({ project }: { project: Project }) {
+
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      const element = textRef.current;
+      if (element) {
+        // Se estiver expandido, não conseguimos medir o overflow "no limite"
+        // então apenas medimos se não estivesse expandido.
+        // Mas a forma mais simples é medir o scrollHeight contra a altura teórica
+        const lineHeight = parseInt(getComputedStyle(element).lineHeight);
+        const limitHeight = lineHeight * LINE_LIMIT;
+        // Adicionamos uma pequena margem de 2px para evitar problemas de arredondamento
+        setIsOverflowing(element.scrollHeight > limitHeight + 2);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [project.description]);
+
+  const toggleExpansion = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <Card
       elevation={5}
@@ -41,13 +72,77 @@ function ProjectCard({ project }: { project: Project }) {
           <Typography variant="h6">{project.title}</Typography>
           <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 1, height: "100%" }}>
 
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ lineHeight: 1.7 }}
-            >
-              {project.description}
-            </Typography>
+            <Box sx={{ position: "relative" }}>
+              <Typography
+                ref={textRef}
+                variant="body2"
+                color="text.secondary"
+                align="justify"
+                sx={{
+                  lineHeight: 1.7,
+                  display: isExpanded ? 'block' : '-webkit-box',
+                  WebkitLineClamp: isExpanded ? 'unset' : LINE_LIMIT,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'normal',
+                }}
+              >
+                {project.description}
+                {isExpanded && (
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleExpansion();
+                    }}
+                    size="small"
+                    sx={{
+                      p: 0,
+                      ml: 1,
+                      verticalAlign: 'baseline',
+                      textTransform: 'none',
+                      minWidth: 'auto',
+                      fontWeight: 'bold',
+                      '&:hover': { background: 'none', textDecoration: 'underline' }
+                    }}
+                  >
+                    Mostrar menos
+                  </Button>
+                )}
+              </Typography>
+
+              {!isExpanded && isOverflowing && (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleExpansion();
+                  }}
+                  size="small"
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    p: 0,
+                    pl: 1,
+                    background: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? '#1e1e1e' // Valor base do card ou aproximado
+                        : "#fff",
+                    textTransform: 'none',
+                    minWidth: 'auto',
+                    fontWeight: 'bold',
+                    '&:hover': {
+                      background: (theme) =>
+                        theme.palette.mode === "dark"
+                          ? '#232b3a'
+                          : "#f4f4f4",
+                    }
+                  }}
+                >
+                  ... mais
+                </Button>
+              )}
+            </Box>
             <Chip
               label={project.stack}
               variant="outlined"
