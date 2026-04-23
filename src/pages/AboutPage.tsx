@@ -2,17 +2,9 @@ import { Box } from "@mui/material";
 import SectionHero from "../components/SectionHero";
 import ContactsCard from "../components/ContactsCard";
 
-interface AboutPageProps {
-  content: {
-    about: {
-      title: string;
-      text: string;
-      photo: string;
-    };
-  };
-}
+import { Content } from "../types";
 
-function AboutPage({ content }: AboutPageProps) {
+function AboutPage({ content }: { content: Content }) {
   return (
     <Box>
       <SectionHero
