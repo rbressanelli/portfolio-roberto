@@ -14,7 +14,7 @@ const PagesRouter = () => {
     <Routes>
       <Route path="/" element={<HomePage content={content} />} />
       <Route path="/about" element={<AboutPage content={content} />} />
-      <Route path="/projects" element={<ProjectsPage content={content} />} />
+      <Route path="/projects" element={<ProjectsPage content={content} setContent={setContent} />} />
       <Route
         path="/admin"
         element={

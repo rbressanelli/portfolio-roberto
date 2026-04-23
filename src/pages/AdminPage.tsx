@@ -227,8 +227,9 @@ function AdminPage({ content, setContent, resetContent }: any) {
     }));
   };
 
-  const saveChanges = () => {
-    setContent(draft);
+  const saveChanges = async () => {
+    await setContent(draft);
+    alert("Alterações salvas com sucesso!");
   };
 
   const handleReset = () => {

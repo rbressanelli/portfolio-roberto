@@ -36,6 +36,7 @@ export function usePortfolioContent() {
   }, []);
 
   const updateContent = async (newContent: any) => {
+    console.log('updateContent called with:', newContent);
     setContent(newContent);
     try {
       const { error } = await supabase
@@ -45,13 +46,11 @@ export function usePortfolioContent() {
 
       if (error) {
         console.error('Erro ao salvar no Supabase:', error);
-        alert('Erro ao salvar as alterações no banco de dados!');
       } else {
-        alert('Alterações salvas com sucesso!');
+        console.log('Alterações salvas com sucesso no Supabase!');
       }
     } catch (err) {
       console.error('Erro:', err);
-      alert('Ocorreu um erro ao salvar as alterações.');
     }
   };
 
