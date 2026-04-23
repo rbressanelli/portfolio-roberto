@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
 import SectionHero from "../components/SectionHero";
 import TechnologyList from "../components/TechnologyList";
+import { Content } from "../types";
 
-function HomePage({ content }: { content: any }) {
+function HomePage({ content }: { content: Content }) {
   return (
     <Box>
       <SectionHero

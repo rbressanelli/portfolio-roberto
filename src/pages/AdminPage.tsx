@@ -156,7 +156,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
     const techName = draft.technologies[index].name || "tech";
     const uploadId = `tech-${index}`;
     setUploading(uploadId);
-    
+
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `tech_${techName.replace(/\s+/g, '_').toLowerCase()}_${Date.now()}.${fileExt}`;
@@ -193,8 +193,8 @@ function AdminPage({ content, setContent, resetContent }: any) {
     setDraft((prev: any) => ({
       ...prev,
       technologies: [
-        ...prev.technologies,
         { ...emptyTechnology, id: Date.now() },
+        ...prev.technologies,
       ],
     }));
   };
@@ -211,7 +211,10 @@ function AdminPage({ content, setContent, resetContent }: any) {
   const addProject = () => {
     setDraft((prev: any) => ({
       ...prev,
-      projects: [...prev.projects, { ...emptyProject, id: Date.now() }],
+      projects: [
+        { ...emptyProject, id: Date.now() },
+        ...prev.projects,
+      ],
     }));
   };
 
@@ -261,14 +264,14 @@ function AdminPage({ content, setContent, resetContent }: any) {
 
   return (
     <Stack spacing={3}>
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 } }}>
+      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 }, position: "fixed", zIndex: 1, width: "calc(100% - 365px)", backgroundColor: "rgba(255, 255, 255, 0.9)" }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={2}
           justifyContent="space-between"
           alignItems={{ md: "center" }}
         >
-          <Box>
+          <Box sx={{}}>
             <Typography variant="h4">Painel administrativo</Typography>
             <Typography color="text.secondary">
               As alterações são salvas diretamente no banco de dados do
@@ -290,12 +293,13 @@ function AdminPage({ content, setContent, resetContent }: any) {
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 } }}>
+      <div style={{ marginTop: "150px" }}></div>
+      <Paper elevation={1} sx={{ p: { xs: 3, md: 4 } }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Home
         </Typography>
         <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, md: 6 }}> 
             <TextField
               label="Título da saudação"
               value={draft.home.greetingTitle}
@@ -352,7 +356,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
         </Grid>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 } }}>
+      <Paper elevation={1} sx={{ p: { xs: 3, md: 4 } }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           About
         </Typography>
@@ -389,7 +393,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
                 component="label"
                 disabled={uploading === "photo"}
               >
-                 {uploading === "photo" ? <CircularProgress size={24} /> : "Mudar foto About"}
+                {uploading === "photo" ? <CircularProgress size={24} /> : "Mudar foto About"}
                 <input
                   type="file"
                   hidden
@@ -414,7 +418,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
         </Grid>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 } }}>
+      <Paper elevation={1} sx={{ p: { xs: 3, md: 4 } }}>
         <Typography variant="h5" sx={{ mb: 2 }}>
           Página de projetos
         </Typography>
@@ -476,7 +480,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
         </Grid>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 } }}>
+      <Paper elevation={1} sx={{ p: { xs: 3, md: 4 } }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           justifyContent="space-between"
@@ -571,7 +575,7 @@ function AdminPage({ content, setContent, resetContent }: any) {
         </Stack>
       </Paper>
 
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 4 } }}>
+      <Paper elevation={1} sx={{ p: { xs: 3, md: 4 } }}>
         <Stack
           direction={{ xs: "column", md: "row" }}
           justifyContent="space-between"

@@ -11,14 +11,9 @@ import {
 import LaunchRoundedIcon from "@mui/icons-material/LaunchRounded";
 import { useState, useRef, useEffect } from "react";
 
-const LINE_LIMIT = 3;
+import { Project } from "../types";
 
-interface Project {
-  title: string;
-  description: string;
-  stack: string;
-  link: string;
-}
+const LINE_LIMIT = 3;
 
 function ProjectCard({ project }: { project: Project }) {
 
@@ -53,6 +48,7 @@ function ProjectCard({ project }: { project: Project }) {
     <Card
       elevation={5}
       sx={{
+        maxWidth: 500,
         height: "100%",
         display: "flex",
         flexDirection: "column",
