@@ -193,8 +193,8 @@ function AdminPage({ content, setContent, resetContent }: any) {
     setDraft((prev: any) => ({
       ...prev,
       technologies: [
-        ...prev.technologies,
         { ...emptyTechnology, id: Date.now() },
+        ...prev.technologies,
       ],
     }));
   };
@@ -211,7 +211,10 @@ function AdminPage({ content, setContent, resetContent }: any) {
   const addProject = () => {
     setDraft((prev: any) => ({
       ...prev,
-      projects: [...prev.projects, { ...emptyProject, id: Date.now() }],
+      projects: [
+        { ...emptyProject, id: Date.now() },
+        ...prev.projects,
+      ],
     }));
   };
 
