@@ -23,6 +23,7 @@ import PaletteRoundedIcon from '@mui/icons-material/PaletteRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
+import ContadorAcesso from './ContadorAcesso';
 
 const menuItems = [
   { to: '/', label: 'Home', icon: <HomeRoundedIcon fontSize="small" /> },
@@ -128,9 +129,9 @@ function AsideMenu({ themeMode, onChangeTheme }: any) {
             })}
           </Stack>
         </Stack>
-
         <Stack spacing={2}>
           <Divider />
+
 
           <Box>
             <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
@@ -200,6 +201,10 @@ function AsideMenu({ themeMode, onChangeTheme }: any) {
                 {place}
               </Typography>
             </Stack>
+          </Box>
+          <Divider />
+          <Box>
+            <ContadorAcesso />
           </Box>
         </Stack>
       </Paper>
